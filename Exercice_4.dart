@@ -1,49 +1,45 @@
 // Classe abstraite Employe
 abstract class Employe {
   String nom;
-  double tauxHoraire;
-  int heuresTravaillees;
 
-  Employe(this.nom, this.tauxHoraire, this.heuresTravaillees);
+  Employe(this.nom);
 
   // Méthode abstraite pour calculer le salaire
   double calculerSalaire();
 }
 
-// Classe EmployePermanent qui hérite de Employe
+// Classe EmployePermanent
 class EmployePermanent extends Employe {
-  double primeFixe;
+  double salaireMensuel;
+  double prime;
 
-  EmployePermanent(String nom, double tauxHoraire, int heuresTravaillees, this.primeFixe)
-      : super(nom, tauxHoraire, heuresTravaillees);
+  EmployePermanent(String nom, this.salaireMensuel, this.prime) : super(nom);
 
   @override
   double calculerSalaire() {
-    // Calcul du salaire : (taux horaire * heures travaillées) + prime fixe
-    return (tauxHoraire * heuresTravaillees) + primeFixe;
+    return salaireMensuel + prime;
   }
 }
 
-// Classe EmployeContractuel qui hérite de Employe
+// Classe EmployeContractuel
 class EmployeContractuel extends Employe {
-  double tauxHoraireSupplémentaire;
+  double tauxHoraire;
+  int heuresTravaillees;
 
-  EmployeContractuel(String nom, double tauxHoraire, int heuresTravaillees, this.tauxHoraireSupplémentaire)
-      : super(nom, tauxHoraire, heuresTravaillees);
+  EmployeContractuel(String nom, this.tauxHoraire, this.heuresTravaillees) : super(nom);
 
   @override
   double calculerSalaire() {
-    // Calcul du salaire : (taux horaire * heures travaillées) + heures supplémentaires * taux horaire supplémentaire
-    return (tauxHoraire * heuresTravaillees) + (tauxHoraireSupplémentaire * (heuresTravaillees - 160));
+    return tauxHoraire * heuresTravaillees;
   }
 }
 
 void main() {
-  // Création d'un Employé Permanent
-  var employePermanent = EmployePermanent('Alice', 20, 160, 500);
-  print('${employePermanent.nom} a un salaire de : ${employePermanent.calculerSalaire()}');
+  // Création des employés
+  Employe permanent = EmployePermanent('Alice', 3000.0, 500.0);
+  Employe contractuel = EmployeContractuel('Bob', 20.0, 120);
 
-  // Création d'un Employé Contractuel
-  var employeContractuel = EmployeContractuel('Bob', 15, 180, 25);
-  print('${employeContractuel.nom} a un salaire de : ${employeContractuel.calculerSalaire()}');
+  // Affichage des salaires
+  print('${permanent.nom} - Salaire : \$${permanent.calculerSalaire()}');
+  print('${contractuel.nom} - Salaire : \$${contractuel.calculerSalaire()}');
 }
